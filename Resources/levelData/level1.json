@@ -1,0 +1,24 @@
+{
+    "wood_pieces":5,
+    "cards_deck":41,
+    "i_b_percent":[0,0,0],
+    "mode":"puzzle",
+    "i_b_time":0,
+    "i_b_strength":[1,1],
+    "tasks_values":[1],
+    "i_b_moves":0,
+    "cards":[
+             [0,399,141,0,true,true,[],0,"goal"],
+             [1,279,6,0,false,false,[],0,"none"],
+             [2,279,276,0,false,false,[],0,"none"],
+             [3,519,6,0,false,false,[],0,"none"],
+             [4,519,276,0,false,false,[],0,"none"],
+             [5,279,141,0,false,false,[],0,"none"],
+             [6,519,141,0,false,false,[],0,"none"],
+             [7,339,216,0,true,true,[5,2,0],1,"none"],
+             [8,459,216,0,true,true,[6,4,0],1,"none"],
+             [9,339,66,0,true,true,[5,1,0],1,"none"],
+             [10,459,66,0,true,true,[6,3,0],1,"none"]
+             ],
+    "tasks":[0]
+}
