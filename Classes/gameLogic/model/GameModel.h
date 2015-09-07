@@ -32,11 +32,11 @@ public:
     CardVO* getRandomCardVO();
     void updateCoverCardCount(int cardIndex);
 public:
-    PuzzleLevelDefinition* puzzleLevelDefinition;
-    BlitzLevelDefinition* blitzLevelDefinition;
+    PuzzleLevelDefinition* puzzleLevelDefinition = nullptr;
+    BlitzLevelDefinition* blitzLevelDefinition = nullptr;
     string mode;
     vector<CardVO*> collection_card;
-    CardVO* curCardVO;
+    CardVO* curCardVO = nullptr;
     
 };
 

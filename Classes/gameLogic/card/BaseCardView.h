@@ -32,7 +32,7 @@ public:
     
 public:
     Sprite* container;
-    Sprite* cardView;
+    CardFaceUpView* cardView;
     Sprite* cardBackView;
     ActionInterval* inAction;
     ActionInterval* outAction;

@@ -44,3 +44,8 @@ void CardSprite::onButtonClicked(std::function<bool(Touch*, Event*)> callback){
     listener->onTouchBegan = callback;
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 }
+
+void CardSprite::onExit(){
+    Sprite::onExit();
+    CCLOG("CardSprite onExit");
+}

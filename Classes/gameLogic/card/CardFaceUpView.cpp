@@ -8,16 +8,10 @@
 
 #include "CardFaceUpView.h"
 
-bool CardFaceUpView::init(){
+bool CardFaceUpView::init(CardVO* cardVO){
     if (!Sprite::init()) {
         return false;
     }
-    
-    return true;
-}
-
-Sprite* CardFaceUpView::create(CardVO* cardVO){
-    
     Sprite* cardView = createSprite("card_face_up.png");
     char card_tome[16];
     sprintf(card_tome, "card_totem_%d.png",cardVO->card_value);
@@ -26,7 +20,7 @@ Sprite* CardFaceUpView::create(CardVO* cardVO){
     Size spSize = cardView->getContentSize();
     totem->setPosition(Vec2(spSize.width/2,spSize.height/2-10));
     cardView->addChild(totem);
-    char card_type_str[16];
+    char card_type_str[20];
     sprintf(card_type_str, "card_type_%d.png",cardVO->card_type);
     Sprite* cardType = createSprite(card_type_str);
     cardType->setScale(0.5);
@@ -51,14 +45,32 @@ Sprite* CardFaceUpView::create(CardVO* cardVO){
     
     if (cardVO->style == "goal") {
         Sprite* glodBoard = createSprite("card_board.png");
-//        Size glodBoardSize = glodBoard->getContentSize();
-//        cardView->setContentSize(glodBoardSize);
+        //        Size glodBoardSize = glodBoard->getContentSize();
+        //        cardView->setContentSize(glodBoardSize);
         glodBoard->setPosition(Vec2(spSize.width/2+2,spSize.height/2-2));
         cardView->addChild(glodBoard);
     }
-    return cardView;
+    this->setContentSize(spSize);
+    this->setAnchorPoint(Vec2(0,0));
+    this->addChild(cardView);
+    return true;
+}
+
+CardFaceUpView* CardFaceUpView::create(CardVO* cardvo){
+    CardFaceUpView* cardView = new (nothrow) CardFaceUpView();
+    if (cardView && cardView->init(cardvo)) {
+        cardView->autorelease();
+        return cardView;
+    }
+    CC_SAFE_DELETE(cardView);
+    return nullptr;
 }
 
 CardFaceUpView::~CardFaceUpView(){
-    
+    CCLOG("CardFaceUpView destructor ");
+}
+
+void CardFaceUpView::onExit(){
+    Sprite::onExit();
+    CCLOG("CardFaceUpView onExit ");
 }

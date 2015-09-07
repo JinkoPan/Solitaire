@@ -29,6 +29,11 @@ public:
     void shakeCard(EventCustom* ec);
 //    void openCard();
     void onOpenCardHandler(EventCustom* ec);
+    void onExit();
+public:
+    EventListenerCustom* collectionCardListener;
+    EventListenerCustom* shakeCardListener;
+    EventListenerCustom* openCardListener;
     
 };
 

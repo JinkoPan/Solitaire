@@ -9,18 +9,38 @@
 #include "GameModel.h"
 
 GameModel::GameModel(){
-    curCardVO = new CardVO();
-    curCardVO->card_type = RANDOMNUM(4);
-    curCardVO->card_value = RANDOMNUM(13);
+    curCardVO = getRandomCardVO();
     collection_card.push_back(curCardVO);
 }
 
 GameModel::~GameModel(){
+    if (puzzleLevelDefinition != nullptr) {
+        delete puzzleLevelDefinition;
+        puzzleLevelDefinition = nullptr;
+    }
     
+    if (blitzLevelDefinition != nullptr) {
+        delete blitzLevelDefinition;
+        blitzLevelDefinition = nullptr;
+    }
+    
+    for (int i; i<collection_card.size(); ++i) {
+        if (collection_card[i]!= nullptr) {
+            delete collection_card[i];
+        }
+    }
+    collection_card.clear();
+    
+    if (curCardVO != NULL) {
+        //delete curCardVO;
+        curCardVO = nullptr;
+    }
+    
+    CCLOG("gamemodel destruction");
 }
 
 void GameModel::createLevelDefinition(string fileName){
-//    LevelDefinition* levelDefinition;
+
     rapidjson::Document doc;
     ssize_t size;
     unsigned char* pByte = NULL;
@@ -44,8 +64,6 @@ void GameModel::createLevelDefinition(string fileName){
         }
         
     }while (0);
-    
-//    return levelDefinition;
 }
 
 CardVO* GameModel::getCardVOByIndex(int index){

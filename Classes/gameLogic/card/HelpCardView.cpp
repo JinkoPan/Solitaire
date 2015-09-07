@@ -22,7 +22,7 @@ bool HelpCardView::initView(CardVO* cardVO){
     Size size = cardView->getContentSize();
     Point pos = Vec2(size.width/2,size.height/2);
     this->setContentSize(size);
-    cardView->setPosition(Vec2(size.width+15,size.height/2));
+    cardView->setPosition(Vec2(size.width+size.width/2+15,size.height));
     this->addChild(cardView);
     
     
@@ -60,6 +60,16 @@ bool HelpCardView::initView(CardVO* cardVO){
     
     return true;
     
+}
+
+HelpCardView* HelpCardView::create(CardVO* cardVo){
+    HelpCardView* cardView = new (nothrow) HelpCardView();
+    if (cardView && cardView->initView(cardVo)) {
+        cardView->autorelease();
+        return cardView;
+    }
+    CC_SAFE_DELETE(cardView);
+    return nullptr;
 }
 
 void HelpCardView::moveToPosition(Vec2 vec){
@@ -112,6 +122,18 @@ bool HelpCardView::touchBegan(Touch* touch, Event* event){
 }
 
 HelpCardView::~HelpCardView(){
-    inAction->release();
-    outAction->release();
+//    inAction->release();
+//    outAction->release();
+//    CCLOG("HelpCardView destructor ");
+}
+void HelpCardView::onExit(){
+    Sprite::onExit();
+    if (inAction) {
+        inAction->release();
+    }
+    
+    if (outAction) {
+        outAction->release();
+    }
+    CCLOG("HelpCardView onExit() ");
 }

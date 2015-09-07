@@ -8,12 +8,6 @@
 
 #include "NormalCardView.h"
 
-//bool init(){
-//    if (!Node::init()) {
-//        return false;
-//    }
-//    return true;
-//}
 
 bool NormalCardView::initView(CardVO* cardVO){
     
@@ -21,10 +15,6 @@ bool NormalCardView::initView(CardVO* cardVO){
         return false;
     }
     
-//    container = Sprite::create();
-//    container->setAnchorPoint(Vec2(0,0));
-//    this->addChild(container);
-   
     cardView = CardFaceUpView::create(cardVO);
     Size size = cardView->getContentSize();
     Point pos = Vec2(size.width/2,size.height/2);
@@ -42,7 +32,7 @@ bool NormalCardView::initView(CardVO* cardVO){
     }
     
     this->setRotation(cardVO->rotation);
-    this->setPosition(Vec2(cardVO->posX+offsetX,cardVO->posY+offsetY));
+    this->setPosition(Vec2(cardVO->posX,cardVO->posY));
     
     
     EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
@@ -52,18 +42,20 @@ bool NormalCardView::initView(CardVO* cardVO){
     
     
 
-    EventListenerCustom* customListener = EventListenerCustom::create("collection_card_event", [=](EventCustom* ec){
+    collectionCardListener = EventListenerCustom::create("collection_card_event", [=](EventCustom* ec){
         CardVO* _cardVO = static_cast<CardVO*>(ec->getUserData());
         if (_cardVO->cardIndex == cardVO->cardIndex) {
             Size visibleSize = Director::getInstance()->getVisibleSize();
-            moveToPosition(Vec2(visibleSize.width/2,80));
+            moveToPosition(Vec2(visibleSize.width/2-OFFSETX,CARD_Y));
         }        
     });
     
-    _eventDispatcher->addEventListenerWithFixedPriority(customListener, 1);
+    _eventDispatcher->addEventListenerWithFixedPriority(collectionCardListener, 1);
     
-    _eventDispatcher->addCustomEventListener("shake_card_event", CC_CALLBACK_1(NormalCardView::shakeCard, this));
-    _eventDispatcher->addCustomEventListener("open_card_event", CC_CALLBACK_1(NormalCardView::onOpenCardHandler, this));
+    shakeCardListener = EventListenerCustom::create("shake_card_event", CC_CALLBACK_1(NormalCardView::shakeCard, this));
+    _eventDispatcher->addEventListenerWithFixedPriority(shakeCardListener, 1);
+    
+    openCardListener = _eventDispatcher->addCustomEventListener("open_card_event", CC_CALLBACK_1(NormalCardView::onOpenCardHandler, this));
     return true;
     
 }
@@ -128,15 +120,10 @@ bool NormalCardView::touchBegan(Touch* touch, Event* event){
 //    printf("width: %f, height: %f\n",s.width,s.height);
     Rect rect = Rect(0,0,s.width,s.height);
     if (rect.containsPoint(locationInNode)) {
-//        moveToPosition(Vec2(300,100));
         if (cardVO->face_up && cardVO->coverCount == 0) {
-//            Size visibleSize = Director::getInstance()->getVisibleSize();
-//            moveToPosition(Vec2(visibleSize.width/2,80));
             EventCustom event("check_card_is_right");
             event.setUserData(cardVO);
             _eventDispatcher->dispatchEvent(&event);
-        }else{
-//            openCard([=](){cardVO->face_up = true;});
         }
         return true;
     }
@@ -144,8 +131,17 @@ bool NormalCardView::touchBegan(Touch* touch, Event* event){
 }
 
 NormalCardView::~NormalCardView(){
-    inAction->release();
-    outAction->release();
-    this->cardVO = nullptr;
-    _eventDispatcher->removeAllEventListeners();
+//    inAction->release();
+//    outAction->release();
+//    this->cardVO = nullptr;
+//    _eventDispatcher->removeAllEventListeners();
+//    CCLOG("NormalCardView destructor ");
+}
+void NormalCardView::onExit(){
+//    cardVO = nullptr;
+    _eventDispatcher->removeEventListener(collectionCardListener);
+    _eventDispatcher->removeEventListener(shakeCardListener);
+    _eventDispatcher->removeEventListener(openCardListener);
+    CCLOG("NormalCardView::onExit()");
+    Sprite::onExit();
 }

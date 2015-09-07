@@ -24,6 +24,9 @@ CardVO::CardVO(int cardIndex,int posX,int posY,int rotation, bool face_up,bool k
 }
 
 CardVO::~CardVO(){
-    
+    if (cover_cards.size() > 0) {
+        cover_cards.clear();
+    }
+    CCLOG(" destruction CardVO");
 }
 

@@ -25,5 +25,6 @@ public:
     static CardSprite* create(string filename);
     
     void onButtonClicked(std::function<bool(Touch*, Event*)> callback);
+    void onExit();
 };
 #endif /* defined(__solitraire__CardSprite__) */

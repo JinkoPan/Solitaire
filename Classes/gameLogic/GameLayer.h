@@ -33,6 +33,9 @@ public:
     void updateCollectionCard();
     void openCardCheck();
     void gameCheck();
+    void createReturnBtn();
+    void onReturnBtnClick(Ref* pSender);
+    void onExit();
 public:
     Node* card_container;
     Node* control_layer;

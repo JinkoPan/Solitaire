@@ -26,7 +26,6 @@ class PuzzleLevelDefinition:public LevelDefinition {
 public:
     PuzzleLevelDefinition();
     ~PuzzleLevelDefinition();
-    void readJsonFile(string fileName);
     vector<int> getIntVector(rapidjson::Value &arr);
     void initData(rapidjson::Document &doc);
     void initCoverCount();

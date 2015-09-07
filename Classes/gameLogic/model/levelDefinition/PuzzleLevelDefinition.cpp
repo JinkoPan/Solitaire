@@ -12,93 +12,19 @@ PuzzleLevelDefinition::PuzzleLevelDefinition(){
 }
 
 PuzzleLevelDefinition::~PuzzleLevelDefinition(){
-    
-}
-
-void PuzzleLevelDefinition::readJsonFile(string fileName){
-    
-    int cardIndex;
-    int posX;
-    int posY;
-    int rotation;
-    bool face_up;
-    bool key_card;
-    vector<int> cover_cards;
-    int zOrder;
-    string style;
-    
-    Document doc;
-    ssize_t size;
-    unsigned char* pByte = NULL;
-    do{
-        pByte = FileUtils::getInstance()->getFileData("level1.json", "r", &size);
-        CC_BREAK_IF(pByte == NULL || strcmp((char*)pByte, "")== 0);
-        std::string data((char*)pByte,size);
-        CC_SAFE_DELETE_ARRAY(pByte);
-        doc.Parse<kParseDefaultFlags>(data.c_str());
-        CC_BREAK_IF(doc.HasParseError());
-        
-        printf("%s\n",data.c_str());
-        rapidjson::Value &wood_pieces_ = doc["wood_pieces"];
-        wood_pieces = wood_pieces_.GetInt();
-        
-        rapidjson::Value &cards_deck_ = doc["cards_deck"];
-        cards_deck = cards_deck_.GetInt();
-        
-        rapidjson::Value &mode_ = doc["mode"];
-        mode = mode_.GetString();
-        
-        rapidjson::Value &i_b_moves_ = doc["i_b_moves"];
-        i_b_moves = i_b_moves_.GetInt();
-        
-        rapidjson::Value &i_b_time_ = doc["i_b_time"];
-        i_b_time = i_b_time_.GetInt();
-        
-        rapidjson::Value &i_b_percent_ = doc["i_b_percent"];
-        i_b_percent = getIntVector(i_b_percent_);
-        
-        rapidjson::Value &i_b_strength_ = doc["i_b_strength"];
-        i_b_strength = getIntVector(i_b_strength_);
-        
-        rapidjson::Value &tasks_values_ = doc["tasks_values"];
-        tasks_values = getIntVector(tasks_values_);
-        
-        rapidjson::Value &tasks_ = doc["tasks"];
-        tasks = getIntVector(tasks_);
-        
-        
-        rapidjson::Value &array = doc["cards"];
-        
-        if (array.IsArray()) {
-            for (rapidjson::SizeType i=0; i<array.Size(); i++) {
-                rapidjson::Value &item = array[i];
-                if (item.IsArray()) {
-                    int k = 0;
-                    cardIndex = item[k++].GetInt();
-                    posX = item[k++].GetInt();
-                    posY = item[k++].GetInt();
-                    rotation = item[k++].GetInt();
-                    face_up = item[k++].GetBool();
-                    key_card = item[k++].GetBool();
-                    rapidjson::Value &arr = item[k++];
-                    for (rapidjson::SizeType j=0; j<arr.Size(); j++) {
-                        cover_cards.push_back(arr[j].GetInt());
-                    }
-                    zOrder = item[k++].GetInt();
-                    style = item[k++].GetString();
-//                    printf("%d  %s ",cardIndex,style.c_str());
-                    CardVO* cardvo = new CardVO(cardIndex,posX,posY,rotation,face_up,key_card,cover_cards,zOrder,style);
-                    cardvo->card_type = (int) RANDOMNUM(4);
-                    cardvo->card_value = (int) RANDOMNUM(13);
-//                    printf("cardvo->card_value: %d",cardvo->card_value);
-                    cards.push_back(cardvo);
-                }
-            }
+    CCLOG("~PuzzleLevelDefinition");
+    for (int i = 0; i<cards.size(); ++i) {
+        if (cards[i] != NULL) {
+            delete cards[i];
         }
-    }while (0);
-
-
+    }
+    cards.clear();
+    i_b_percent.clear();
+    i_b_strength.clear();
+    tasks_values.clear();
+    tasks.clear();
 }
+
 
 void PuzzleLevelDefinition::initData(rapidjson::Document &doc){
     int cardIndex;
@@ -110,7 +36,7 @@ void PuzzleLevelDefinition::initData(rapidjson::Document &doc){
     vector<int> cover_cards;
     int zOrder;
     string style;
-    
+    Size visibleSize = Director::getInstance()->getVisibleSize();
 
     do{
         if (doc.HasMember("wood_pieces")) {
@@ -153,7 +79,7 @@ void PuzzleLevelDefinition::initData(rapidjson::Document &doc){
                     int k = 0;
                     cardIndex = item[k++].GetInt();
                     posX = item[k++].GetInt();
-                    posY = item[k++].GetInt();
+                    posY = visibleSize.height - item[k++].GetInt();
                     rotation = item[k++].GetInt();
                     face_up = item[k++].GetBool();
                     key_card = item[k++].GetBool();

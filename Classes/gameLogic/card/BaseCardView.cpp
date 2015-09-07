@@ -16,7 +16,12 @@
 //}
 
 BaseCardView::~BaseCardView(){
-    
+    CCLOG(" ~BaseCardView ");
+    if (cardVO) {
+        delete cardVO;
+        cardVO = nullptr;
+    }
+
 }
 
 bool BaseCardView::initView(CardVO* cardVO){
@@ -24,6 +29,7 @@ bool BaseCardView::initView(CardVO* cardVO){
         return false;
     }
     this->cardVO = cardVO;
+    
 //    EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
 //    listener->onTouchBegan = CC_CALLBACK_2(BaseCardView::touchBegan, this);
 //    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);

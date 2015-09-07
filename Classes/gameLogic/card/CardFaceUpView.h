@@ -23,8 +23,10 @@ using namespace cocos2d;
 
 class CardFaceUpView:public Sprite{
 public:
-    bool init();
-    static Sprite* create(CardVO* cardvo);
+    bool init(CardVO* cardvo);
+    static CardFaceUpView* create(CardVO* cardvo);
     ~CardFaceUpView();
+    void onExit();
+//    CREATE_FUNC(CardFaceUpView);
 };
 #endif /* defined(__solitraire__CardFaceUpView__) */

@@ -13,7 +13,8 @@ BlitzLevelDefinition::BlitzLevelDefinition(){
 }
 
 BlitzLevelDefinition::~BlitzLevelDefinition(){
-    
+    i_b_strength.clear();
+    stars.clear();
 }
 
 void BlitzLevelDefinition::initData(rapidjson::Document &doc){

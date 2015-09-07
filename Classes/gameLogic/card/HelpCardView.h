@@ -18,9 +18,10 @@ public:
     bool touchBegan(Touch* touch,Event* event);
     void moveToPosition(Vec2 vec);
     void shakeCard(EventCustom* ec);
+    static HelpCardView* create(CardVO* cardVO);
 //    void openCard(std::function<void()> callback);
     ~HelpCardView();
-public:
+    void onExit();
     
     
 };

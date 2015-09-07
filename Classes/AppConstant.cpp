@@ -11,42 +11,27 @@
 map<int,string> AppConstant::cards_face = AppConstant::createCardFace();
 map<string,int> AppConstant::card_value = AppConstant::createCardValue();
 
+
 AppConstant::AppConstant(){
+    levelId = 1;
     
-    
-//    cards_face.insert({1,"2"});
-//    cards_face.insert({2,"3"});
-//    cards_face.insert({3,"4"});
-//    cards_face.insert({4,"5"});
-//    cards_face.insert({5,"6"});
-//    cards_face.insert({6,"7"});
-//    cards_face.insert({7,"8"});
-//    cards_face.insert({8,"9"});
-//    cards_face.insert({9,"10"});
-//    cards_face.insert({10,"J"});
-//    cards_face.insert({11,"Q"});
-//    cards_face.insert({12,"K"});
-//    cards_face.insert({13,"A"});
-//    cards_face.insert({0,"JO"});
-//    
-//    
-//    card_value.insert({"2",1});
-//    card_value.insert({"3",2});
-//    card_value.insert({"4",3});
-//    card_value.insert({"5",4});
-//    card_value.insert({"6",5});
-//    card_value.insert({"7",6});
-//    card_value.insert({"8",7});
-//    card_value.insert({"9",8});
-//    card_value.insert({"10",9});
-//    card_value.insert({"J",10});
-//    card_value.insert({"Q",11});
-//    card_value.insert({"K",12});
-//    card_value.insert({"A",13});
-//    card_value.insert({"JO",0});
 }
 AppConstant::~AppConstant(){
     
+}
+
+AppConstant* AppConstant::_instance = new(nothrow) AppConstant();
+
+AppConstant* AppConstant::getInstance(){
+    return _instance;
+}
+
+AppConstant::AppConstant(const AppConstant&){
+    
+}
+
+AppConstant& AppConstant::operator=(const AppConstant&){
+    return *this;
 }
 
 map<int,string> AppConstant::createCardFace(){
@@ -87,3 +72,4 @@ map<string,int> AppConstant::createCardValue(){
     tempMap.insert({"JO",0});
     return tempMap;
 }
+
