@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "MapScene.h"
 
+
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -43,6 +44,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 //    auto scene = HelloWorld::createScene();
 //    auto scene = GameScene::create();
     auto scene = MapScene::createScene();
+
     // run
     director->runWithScene(scene);
 

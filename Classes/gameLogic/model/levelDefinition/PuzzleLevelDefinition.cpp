@@ -23,6 +23,13 @@ PuzzleLevelDefinition::~PuzzleLevelDefinition(){
     i_b_strength.clear();
     tasks_values.clear();
     tasks.clear();
+    
+    for (int j = 0; j<taskVec.size(); ++j) {
+        if (taskVec[j] != nullptr) {
+            delete taskVec[j];
+        }
+    }
+    taskVec.clear();
 }
 
 
@@ -69,7 +76,7 @@ void PuzzleLevelDefinition::initData(rapidjson::Document &doc){
         rapidjson::Value &tasks_ = doc["tasks"];
         tasks = getIntVector(tasks_);
         
-        
+        createTaskVec(tasks,tasks_values);
         rapidjson::Value &array = doc["cards"];
         
         if (array.IsArray()) {
@@ -129,5 +136,24 @@ void PuzzleLevelDefinition::initCoverCount(){
         for (int j=0; j<covers.size(); ++j) {
             cards[covers[j]]->coverCount++;
         }
+    }
+}
+
+void PuzzleLevelDefinition::createTaskVec(const vector<int> &t,const vector<int> &t_v) {
+    TaskVO* task;
+    for (int i =0; i< t.size(); i++) {
+        
+        switch (t[i]) {
+            case GOLD_CARD:
+                task = new GoldCardTask(GOLD_CARD,0,t_v[i]);
+                break;
+            case REMAIN_CARD:
+                task = new RemainCardTask(REMAIN_CARD,0,t_v[i]);
+                break;
+            case COMBO_CARD:
+                task = new ComboCardTask(COMBO_CARD,0,t_v[i]);
+                break;
+        }
+        taskVec.push_back(task);
     }
 }

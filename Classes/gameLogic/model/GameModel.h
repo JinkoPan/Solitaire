@@ -37,6 +37,7 @@ public:
     string mode;
     vector<CardVO*> collection_card;
     CardVO* curCardVO = nullptr;
+    int combo;
     
 };
 

@@ -15,6 +15,7 @@ bool GameScene::init(){
         return false;
     }
     addSpriteFrameWithFileExt("res/CardAssets.plist");
+    addSpriteFrameWithFileExt("res/UI.plist");
     this->addChild(GameLayer::create());
     return true;
 }

@@ -30,3 +30,31 @@ CardVO::~CardVO(){
     CCLOG(" destruction CardVO");
 }
 
+//CardVO::CardVO(const CardVO& cardVo){
+//    this->cardIndex = cardVo.cardIndex;
+//    this->posX = cardVo.posX;
+//    this->posY = cardVo.posY;
+//    this->rotation = cardVo.rotation;
+//    this->face_up = cardVo.face_up;
+//    this->key_card = cardVo.key_card;
+//    this->cover_cards = cardVo.cover_cards;
+//    this->zOrder = cardVo.zOrder;
+//    this->style = cardVo.style;
+//}
+
+CardVO* CardVO::clone(){
+    CardVO* cardVO = new CardVO();
+    cardVO->cardIndex = this->cardIndex;
+    cardVO->card_type = this->card_type;
+    cardVO->card_value = this->card_value;
+    cardVO->posX = this->posX;
+    cardVO->posY = this->posY;
+    cardVO->rotation = this->rotation;
+    cardVO->face_up = this->face_up;
+    cardVO->key_card = this->key_card;
+    cardVO->cover_cards = this->cover_cards;
+    cardVO->zOrder = this->zOrder;
+    cardVO->style = this->style;
+    return cardVO;
+}
+

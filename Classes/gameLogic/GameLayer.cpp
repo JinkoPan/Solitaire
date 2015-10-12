@@ -10,7 +10,7 @@
 #include "utils/utils.h"
 #include "HelpCardView.h"
 #include "MapScene.h"
-
+#include "SuccessPopup.h"
 
 bool GameLayer::init(){
     if (!Layer::init()) {
@@ -39,9 +39,10 @@ bool GameLayer::init(){
     _eventDispatcher->addCustomEventListener("check_card_is_right", [=](EventCustom* ec){
 //        printf("check_card_is_right ===== ");
         CardVO* cardVO = static_cast<CardVO*>(ec->getUserData());
+//        printf("cardvalue: %d, type: %d\n",cardVO->card_value,cardVO->card_type);
         string eventName = "";
         if (gameModel->cardCheck(cardVO)){
-            printf("card is right !");
+//            printf("card is right !");
             eventName = "collection_card_event";
             openCardCheck();
         }else{
@@ -55,6 +56,10 @@ bool GameLayer::init(){
     _eventDispatcher->addCustomEventListener("update_collection_card", [=](EventCustom* ec){
         updateCollectionCard();
         gameCheck();
+    });
+    
+    _eventDispatcher->addCustomEventListener("back_to_map", [=](EventCustom* ec){
+        onReturnBtnClick(nullptr);
     });
     
     return true;
@@ -92,7 +97,7 @@ bool GameLayer::onCollectionCardClick(Touch* touch, Event* event){
         CardVO* cardVo = gameModel->getRandomCardVO();
         gameModel->curCardVO = cardVo;
         gameModel->collection_card.push_back(cardVo);
-        HelpCardView* cardView = HelpCardView::create(cardVo);
+        HelpCardView* cardView = HelpCardView::create(cardVo->clone());
         cardView->setPosition(Vec2(visibleSize.width/2-OFFSETX-88,CARD_Y));
         int t = (int)card_container->getChildrenCount();
         card_container->addChild(cardView,t);
@@ -131,7 +136,7 @@ void GameLayer::updateCollectionCard(){
     if (collection_card != nullptr) {
         collection_card->removeFromParentAndCleanup(true);
     }
-    printf("curcard cardvalue: %d\n",gameModel->curCardVO->card_value);
+//    printf("curcard cardvalue: %d\n",gameModel->curCardVO->card_value);
     collection_card = CardFaceUpView::create(gameModel->curCardVO);
     collection_card->setPosition(Vec2(visibleSize.width/2-OFFSETX,CARD_Y));
     card_container->addChild(collection_card);
@@ -150,6 +155,37 @@ void GameLayer::openCardCheck(){
 
 void GameLayer::gameCheck(){
     //是否完成任务
+    if (gameModel->mode == "puzzle") {
+        vector<TaskVO*> vec = gameModel->puzzleLevelDefinition->taskVec;
+        int finishCount = 0 ;
+        for (int i=0; i<vec.size(); i++) {
+            switch(vec[i]->type){
+                    case GOLD_CARD:
+                        if (gameModel->curCardVO->style == "goal") {
+                            vec[i]->currentCount++;
+                            if (vec[i]->checkFinish()){
+                                finishCount++;
+                            };
+                            
+                        }
+                    break;
+                    case REMAIN_CARD:
+                    break;
+                    case COMBO_CARD:
+                    break;
+            }
+        }
+        if (finishCount == vec.size()) {
+            printf(" you are win \n");
+            SuccessPopup* popup = SuccessPopup::create();
+            Size visibleSize = Director::getInstance()->getVisibleSize();
+            popup->setPosition(Vec2(visibleSize.width/2,visibleSize.height/2));
+            popup->show();
+            this->addChild(popup);
+        }
+        
+    }
+    
 }
 
 void GameLayer::onExit(){
@@ -157,6 +193,7 @@ void GameLayer::onExit(){
 //    _eventDispatcher->removeEventListenersForTarget(this);
     _eventDispatcher->removeCustomEventListeners("update_collection_card");
     _eventDispatcher->removeCustomEventListeners("check_card_is_right");
+    _eventDispatcher->removeCustomEventListeners("back_to_map");
     delete gameModel;
     CCLOG("GameLayer:: onExit() ");
 }

@@ -42,6 +42,7 @@ CardSprite* CardSprite::create(string filename){
 void CardSprite::onButtonClicked(std::function<bool(Touch*, Event*)> callback){
     EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = callback;
+    listener->clone();
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 }
 

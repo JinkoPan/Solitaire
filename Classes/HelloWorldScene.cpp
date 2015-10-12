@@ -8,6 +8,11 @@
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 #include "ui/CocosGUI.h"
+#include "SuccessPopup.h"
+#include "UIButton.h"
+#include <string.h>
+
+
 
 
 using namespace rapidjson;
@@ -86,9 +91,37 @@ bool HelloWorld::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
     
-    readJsonFileTest2();
+//    readJsonFileTest2();
+    
+//    std::thread t1(&HelloWorld::myThreadFunc,this,10);
+//    t1.detach();
+//    t1.join();
+    SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+    cache->addSpriteFramesWithFile("res/UI.plist");
+    
+    SuccessPopup* bp = SuccessPopup::create();
+    bp->setPosition(Vec2(300,300));
+    bp->show();
+    this->addChild(bp);
+    
+    //"green_button_normal.png", "red_button_normal.png"
+    UIButton* btn = UIButton::create("green_button_normal.png","red_button_normal.png");
+    btn->onButtonClicked([](){
+        printf("btn click !\n");
+    });
+    btn->setPosition(Vec2(visibleSize.width/2,400));
+    this->addChild(btn);
     
     
+
+//    ticks = 10;
+//    std::thread tA(&HelloWorld::threadAFunc,this);
+//    std::thread tB(&HelloWorld::threadBFunc,this);
+//    
+//    tA.detach();
+//    tB.detach();
+//    CCLOG(" major thread !");
+
     return true;
 }
 
@@ -171,10 +204,37 @@ void HelloWorld::readJsonFileTest(){
 //        cout<<(&it->value)->GetInt()<<endl;
         
     }
+}
 
+void HelloWorld::myThreadFunc(int aa){
+    CCLOG("my thread function %d!",aa);
+}
+
+void HelloWorld::threadAFunc(){
+    while (true) {
+        mutex.lock();
+        if (ticks>0) {
+            CCLOG("threadA remind %d ticks!",ticks--);
+            mutex.unlock();
+        }else{
+            mutex.unlock();
+            break;
+        }
+    }
     
-    
-    
+}
+
+void HelloWorld::threadBFunc(){
+    while (true) {
+        mutex.lock();
+        if (ticks>0) {
+            CCLOG("threadB remind %d ticks!",ticks--);
+            mutex.unlock();
+        }else{
+            mutex.unlock();
+            break;
+        }
+    }
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)

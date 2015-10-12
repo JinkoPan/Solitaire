@@ -23,6 +23,8 @@ public:
     CardVO();
     CardVO(int cardIndex,int posX,int posY,int rotation,bool face_up,bool key_card,vector<int> cover_cards,int zOrder,string style);
     virtual ~CardVO();
+//    CardVO(const CardVO& cardVo);
+    CardVO* clone();
 public:
     int card_value;
     int card_type;

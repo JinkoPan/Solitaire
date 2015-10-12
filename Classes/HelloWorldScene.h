@@ -20,6 +20,13 @@ public:
     
     void readJsonFileTest();
     void readJsonFileTest2();
+    void myThreadFunc(int aa);
+    
+    void threadAFunc();
+    void threadBFunc();
+public:
+    int ticks;
+    std::mutex mutex;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

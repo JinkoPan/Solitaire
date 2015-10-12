@@ -37,6 +37,7 @@ Sprite* createSprite(string spriteName){
 }
 
 bool checkIsRight(int card1,int card2){
+    printf("card1:%d, card2:%d \n",card1,card2);
     if (card1 == 0 || card2 == 0) {
         return true;
     }

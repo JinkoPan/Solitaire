@@ -24,7 +24,7 @@ GameModel::~GameModel(){
         blitzLevelDefinition = nullptr;
     }
     
-    for (int i; i<collection_card.size(); ++i) {
+    for (int i= 0; i<collection_card.size(); ++i) {
         if (collection_card[i]!= nullptr) {
             delete collection_card[i];
         }
@@ -32,7 +32,6 @@ GameModel::~GameModel(){
     collection_card.clear();
     
     if (curCardVO != NULL) {
-        //delete curCardVO;
         curCardVO = nullptr;
     }
     
@@ -81,8 +80,9 @@ bool GameModel::cardCheck(CardVO* card){
         return false;
     }
     if (checkIsRight(curCardVO->card_value,card->card_value)){
-        this->curCardVO = card;
-        this->collection_card.push_back(card);
+        auto cardVo = card->clone();
+        this->curCardVO = cardVo;
+        this->collection_card.push_back(cardVo);
         updateCoverCardCount(card->cardIndex);
         puzzleLevelDefinition->cards_deck--;
         return true;

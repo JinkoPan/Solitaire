@@ -22,6 +22,13 @@ using namespace std;
 #define OFFSETY (-100)
 #define CARD_Y (160)
 
+enum TASK_TYPE{
+    GOLD_CARD = 0,
+    COUNT_DOWN = 2,
+    REMAIN_CARD = 3,
+    COMBO_CARD = 4
+};
+
 class AppConstant{
 public:
     ~AppConstant();

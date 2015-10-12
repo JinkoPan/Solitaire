@@ -17,6 +17,11 @@
 #include "../vo/CardVO.h"
 #include "LevelDefinition.h"
 #include "AppConstant.h"
+#include "TaskVO.h"
+#include "GoldCardTask.h"
+#include "RemainCardTask.h"
+#include "ComboCardTask.h"
+
 
 using namespace std;
 using namespace cocos2d;
@@ -30,6 +35,7 @@ public:
     void initData(rapidjson::Document &doc);
     void initCoverCount();
     bool sortCompareFunc(CardVO* a, CardVO* b);
+    void createTaskVec(const vector<int> &t,const vector<int> &t_v);
 public:
     int wood_pieces;
     int cards_deck;
@@ -41,6 +47,7 @@ public:
     int i_b_moves;
     vector<CardVO*> cards;
     vector<int> tasks;
+    vector<TaskVO*> taskVec;
 };
 
 #endif /* defined(__solitraire__PuzzleLevelDefinition__) */
